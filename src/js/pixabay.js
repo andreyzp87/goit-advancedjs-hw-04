@@ -5,16 +5,16 @@ const searchParams = new URLSearchParams({
   image_type: 'photo',
   orientation: 'horizontal',
   safesearch: true,
-  per_page: 40,
 });
 
 export default class PixabayApi {
   constructor() {
     this.page = 1;
+    this.pageSize = 40;
   }
 
   async fetchImages(searchQuery) {
-    const url = `${apiUrl}?key=${apiKey}&q=${searchQuery}&${searchParams}&page=${this.page}`;
+    const url = `${apiUrl}?key=${apiKey}&q=${searchQuery}&${searchParams}&page=${this.page}&per_page=${this.pageSize}`;
     const response = await fetch(url);
     const data = await response.json();
     return data;

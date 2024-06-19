@@ -52,9 +52,11 @@ function onSearch(e) {
     .catch(error => {
       iziToast.error({
         title: 'Error',
-        message: 'No images found. Try again.',
+        message:
+          'Sorry, there are no images matching your search query. Please try again.',
         position: 'topRight',
       });
+      loader.classList.add('hidden');
     });
 
   e.currentTarget.reset();
@@ -67,6 +69,15 @@ function onLoadMore() {
     .fetchImages(searchQuery)
     .then(data => {
       renderGalleryImages(data);
+
+      if (data.totalHits < pixabayApi.pageSize * pixabayApi.page) {
+        loadMoreButton.classList.add('hidden');
+        iziToast.warning({
+          title: 'Warning',
+          message: "We're sorry, but you've reached the end of search results.",
+          position: 'topRight',
+        });
+      }
     })
     .catch(error => {
       iziToast.error({
@@ -74,6 +85,9 @@ function onLoadMore() {
         message: 'No images found',
         position: 'topRight',
       });
+
+      loadMoreButton.classList.add('hidden');
+      loader.classList.add('hidden');
     });
 }
 
